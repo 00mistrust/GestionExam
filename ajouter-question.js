@@ -51,7 +51,7 @@ document.getElementById('form-question').addEventListener('submit', function(e) 
     const q = {
         title: document.getElementById('enonce').value,
         time: document.getElementById('duree').value,
-        pts: document.getElementById('points').value,
+        points: document.getElementById('points').value,
         answers: props
     };
 
