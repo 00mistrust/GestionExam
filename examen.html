@@ -14,18 +14,18 @@
 
     <script>
         document.getElementById('afficher').addEventListener('click', () => {
-            // 1. Lire le nom du propriétaire
+            // 1. Lire le nom du proprietaire
             const prop = document.getElementById('proprietaire').value;
             const key = 'examens_' + prop;
 
-            // 2. Récupérer les examens depuis le localStorage
+            // 2. Recuperer les examens depuis le localStorage
             const exams = JSON.parse(localStorage.getItem(key)) || [];
 
             // 3. Vider l'affichage précédent
             const res = document.getElementById('resultat');
             res.innerHTML = '';
 
-            // 4. Cas où aucun examen n'est trouvé
+            // 4. Cas ou aucun examen n'est trouve
             if (exams.length === 0) {
                 res.innerHTML = '<p>Aucun examen trouvé pour ce propriétaire.</p>';
                 return;
@@ -33,7 +33,7 @@
 
             // 5. Afficher chaque examen et ses questions
             exams.forEach((exam) => {
-                // Créer un titre pour l'examen
+                // Creer un titre pour l'examen
                 const h2 = document.createElement('h2');
                 h2.textContent = `Examen : ${exam.nom} (${exam.duree} min)`;
                 res.appendChild(h2);
@@ -47,9 +47,16 @@
                 exam.questions.forEach((q) => {
                     const li = document.createElement('li');
                     li.innerHTML = `<strong>${q.title}</strong> (${q.points} pts) - ${q.time} sec`;
-                    ul.appendChild(li);
-                });
-                
+                // Afficher les propositions de la question ---
+                const olProps = document.createElement('ol'); // Liste ordonnee pour les réponses
+                q.answers.forEach((ans) => {
+                const liProp = document.createElement('li');
+                liProp.textContent = ans.text + (ans.correct ? " correcte" : "");
+                olProps.appendChild(liProp);
+    });
+    li.appendChild(olProps); 
+    ul.appendChild(li);
+});
                 res.appendChild(ul);
                 res.appendChild(document.createElement('hr'));
             });
