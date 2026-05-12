@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des examens</title>
+</head>
+<body>
+    <h1>Examens enregistres</h1>
+    
+    <input type="text" id="proprietaire" placeholder="Nom du propriétaire">
+    <button id="afficher">Afficher</button>
+    
+    <div id="resultat"></div>
+
+    <script>
+        document.getElementById('afficher').addEventListener('click', () => {
+            // 1. Lire le nom du propriétaire
+            const prop = document.getElementById('proprietaire').value;
+            const key = 'examens_' + prop;
+
+            // 2. Récupérer les examens depuis le localStorage
+            const exams = JSON.parse(localStorage.getItem(key)) || [];
+
+            // 3. Vider l'affichage précédent
+            const res = document.getElementById('resultat');
+            res.innerHTML = '';
+
+            // 4. Cas où aucun examen n'est trouvé
+            if (exams.length === 0) {
+                res.innerHTML = '<p>Aucun examen trouvé pour ce propriétaire.</p>';
+                return;
+            }
+
+            // 5. Afficher chaque examen et ses questions
+            exams.forEach((exam) => {
+                // Créer un titre pour l'examen
+                const h2 = document.createElement('h2');
+                h2.textContent = `Examen : ${exam.nom} (${exam.duree} min)`;
+                res.appendChild(h2);
+
+                const p = document.createElement('p');
+                p.textContent = `Description : ${exam.description}`;
+                res.appendChild(p);
+
+                // Afficher les questions
+                const ul = document.createElement('ul');
+                exam.questions.forEach((q) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${q.title}</strong> (${q.points} pts) - ${q.time} sec`;
+                    ul.appendChild(li);
+                });
+                
+                res.appendChild(ul);
+                res.appendChild(document.createElement('hr'));
+            });
+        });
+    </script>
+</body>
+</html>
